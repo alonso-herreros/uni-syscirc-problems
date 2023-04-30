@@ -4,15 +4,17 @@ from .symbolics import get_free_symbols, evaluate_on_range
 
 
 def plotdiscr(funcs:list[callable], T:list[int], vars=Symbol("n", integer=True), **kwargs):
+    plt.axhline(0, color='black', linewidth=0.8)
+    plt.grid(linewidth=0.5)
+
     time = range(T[0], T[1]+1)
 
-    if not isinstance(funcs, list):
-        funcs = [funcs]
+    if not isinstance(funcs, list): funcs = [funcs]
+    if not isinstance(vars, list): vars = [vars]
+
     for i in range(len(funcs)):
         _plotdiscr_single(funcs[i], time, var=vars[i] if i<len(vars) else vars[0], **kwargs)
 
-    plt.axhline(0, color='black', linewidth=0.8)
-    plt.grid(linewidth=0.5)
     plt.show()
 
 
@@ -40,22 +42,20 @@ def _plotdiscr_single(f:callable, time:list[int], var:Symbol, **kwargs):
 
 
 def plotcont(funcs:list[callable], T:list[float], timestep:float=0.01, vars=Symbol("t", real=True), nsamples:int=None, **kwargs):
-    if nsamples==None:
-        nsamples = int(((T[1]-T[0]))/timestep + 1.5)
-    else:
-        timestep = (T[1]-T[0])/(nsamples-1)
-    time = [T[0]+timestep*i for i in range(nsamples)]
-
-    if not isinstance(funcs, list):
-        funcs = [funcs]
-    if not isinstance(vars, list):
-        vars = [vars]
-    for i in range(len(funcs)):
-        _plotcont_single(funcs[i], time, var=vars[i] if i<len(vars) else vars[0], **kwargs)
-
     plt.axhline(0, color='black', linewidth=0.7)
     plt.axvline(0, color='black', linewidth=0.7)
     plt.grid(linewidth=0.5)
+
+    if nsamples==None: nsamples = int(((T[1]-T[0]))/timestep + 1.5)
+    else: timestep = (T[1]-T[0])/(nsamples-1)
+    time = [T[0]+timestep*i for i in range(nsamples)]
+
+    if not isinstance(funcs, list): funcs = [funcs]
+    if not isinstance(vars, list): vars = [vars]
+
+    for i in range(len(funcs)):
+        _plotcont_single(funcs[i], time, var=vars[i] if i<len(vars) else vars[0], **kwargs)
+
     plt.show()
 
 
