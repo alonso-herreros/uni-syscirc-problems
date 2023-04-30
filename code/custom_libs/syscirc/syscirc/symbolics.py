@@ -12,41 +12,42 @@ class Known(Symbol):
 
     @property
     def value(self): return self._value
+    @value.setter
+    def value(self, value):
+        self._value = value
     
     def __repr__(self):
         return f"{self.name} = {self.value}"
     def __str__(self):
-        return f"{self.name} = {self.value}"
+        return self.name
     def __float__(self):
         return self.evalf()
     
     def evalf(self):
-        resolved = Known.resolvef(self.value)
-        try: return resolved.evalf()
-        except AttributeError: return float(resolved)
+        return self.update(self.value, -1, True)
 
-    def update(self, expr):
-        return expr.subs(self, self.value)
-
-    def updatef(self, expr):
-        return expr.subs(self, self.evalf())
+    def update(self, expr, levels:int=1, evalf:bool=False):
+        return Known.resolve(expr, [self], levels, evalf)
     
     @staticmethod
-    def resolve(expression):
-        for s in expression.free_symbols:
-            if isinstance(s, Known):
-                expression = s.update(expression)
-        return expression
-    @staticmethod
-    def resolvef(expression):
-        try:
-            for s in expression.free_symbols:
-                if isinstance(s, Known):
-                    expression = s.updatef(expression)
-        except AttributeError:
-            try: expression = expression.evalf()
-            except (TypeError, AttributeError): pass
-        return expression
+    def resolve(expr, knowns=[], levels:int=1, evalf:bool=False, exclude=[]):
+        knowns = [knowns] if not isinstance(knowns, list) else knowns
+        exclude = [exclude] if not isinstance(exclude, list) else exclude
+        if evalf:
+            try: return float(expr)
+            except TypeError: pass
+
+        if levels == 0 or levels < -100:
+            return expr
+
+        changed = False
+        for s in expr.free_symbols:
+            if (knowns and s not in knowns) or (exclude and s in exclude): continue
+            try:
+                expr = expr.subs(s, s.value)
+                changed = s != s.value
+            except AttributeError: pass
+        return Known.resolve(expr, knowns, changed*(levels-1), evalf)
 
     
 def get_free_symbols(values):
