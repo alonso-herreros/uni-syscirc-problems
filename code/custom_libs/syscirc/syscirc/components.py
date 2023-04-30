@@ -23,27 +23,27 @@ class Component:
 
     @property
     def V(self):
-        if self._V == None:
-            self._V = self._I*self.Z if self._I!=None else None
-        return Known(f"V_{self.name}", self._V)
+        if self._V == None: V_ = self._I*self.Z if self._I!=None else None
+        else: V_ = self._V
+        return Known(f"V_{self.name}", V_)
     @V.setter
-    def V(self, V):
+    def V(self, V_):
         if self._I!=None:
             raise Exception("Cannot specify both V and I")
-        self._V = V
+        self._V = V_
     @property
     def v(self): return re(self.V)
 
     @property
     def I(self):
-        if self._I == None:
-            self._I = self._V/self.Z if self._V!=None else None
-        return Known(f"I_{self.name}", self._I)
+        if self._I == None: I_ = self._V/self.Z if self._V!=None else None
+        else: I_ = self._I
+        return Known(f"I_{self.name}", I_)
     @I.setter
-    def I(self, I):
+    def I(self, I_):
         if self._V!=None:
             raise Exception("Cannot specify both V and I")
-        self._I = I
+        self._I = I_
     @property
     def i(self): return re(self.I)
 
