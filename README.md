@@ -1,6 +1,6 @@
 # uni-syscirc-problems
 
-Systems and Circuits - Problems from Signals and Systems book
+Systems and Circuits - Files that helped solving the problems from Signals and Systems book
 
 ---
 
