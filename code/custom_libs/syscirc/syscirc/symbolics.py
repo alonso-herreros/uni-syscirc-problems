@@ -18,18 +18,34 @@ class Known(Symbol):
     def __str__(self):
         return f"{self.name} = {self.value}"
     def __float__(self):
-        return float(self.value)
+        return self.evalf()
     
-    def evalf(self): return self.value
+    def evalf(self):
+        resolved = Known.resolvef(self.value)
+        try: return resolved.evalf()
+        except AttributeError: return float(resolved)
 
     def update(self, expr):
         return expr.subs(self, self.value)
+
+    def updatef(self, expr):
+        return expr.subs(self, self.evalf())
     
     @staticmethod
-    def updateAll(expression):
+    def resolve(expression):
         for s in expression.free_symbols:
             if isinstance(s, Known):
                 expression = s.update(expression)
+        return expression
+    @staticmethod
+    def resolvef(expression):
+        try:
+            for s in expression.free_symbols:
+                if isinstance(s, Known):
+                    expression = s.updatef(expression)
+        except AttributeError:
+            try: expression = expression.evalf()
+            except (TypeError, AttributeError): pass
         return expression
 
     
