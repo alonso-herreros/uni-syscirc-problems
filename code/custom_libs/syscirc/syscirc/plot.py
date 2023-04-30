@@ -66,5 +66,5 @@ def _plotcont_single(f:callable, time:list[float], var:Symbol=Symbol("t"), label
     try:
         plt.plot(time, values)
     except TypeError as e:
-        raise TypeError(f"There may free symbols left in the function: {get_free_symbols(values)}") from e
+        raise TypeError(f"There may free symbols left: {get_free_symbols(values)} in the function, {get_free_symbols(time)} in the time.") from e
 
