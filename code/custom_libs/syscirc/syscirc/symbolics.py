@@ -1,4 +1,4 @@
-from sympy import Symbol, nan
+from sympy import Symbol, Rel, nan
 
 class Known(Symbol):
     def __new__(cls, name, value):
@@ -8,6 +8,9 @@ class Known(Symbol):
 
     def __init__(self, name:str, value):
         Symbol.__init__(name)
+        self._value = value
+    def __init__(self, symbol:Symbol, value):
+        self = symbol
         self._value = value
 
     @property
@@ -24,7 +27,7 @@ class Known(Symbol):
         return self.evalf()
     
     def evalf(self):
-        return self.update(self.value, -1, True)
+        return Known.resolve(self.value, levels=-1, evalf=True)
 
     def update(self, expr, levels:int=1, evalf:bool=False):
         return Known.resolve(expr, [self], levels, evalf)
@@ -49,7 +52,11 @@ class Known(Symbol):
             except AttributeError: pass
         return Known.resolve(expr, knowns, changed*(levels-1), evalf)
 
-    
+
+def op_lr(rel:Rel, func):
+    return rel.__class__(func(rel.lhs), func(rel.rhs))
+
+
 def get_free_symbols(values):
     symbols = set()
     for v in values:
@@ -60,6 +67,8 @@ def get_free_symbols(values):
 
 def evaluate_on_range(f, time:list[float], var:Symbol=Symbol("t"), **kwargs):
     values = []
+    try: f = Known.resolve(f, levels=-1, evalf=True)
+    except TypeError: pass
     for i in time:
         try: val = f(i)
         except TypeError:
@@ -69,8 +78,9 @@ def evaluate_on_range(f, time:list[float], var:Symbol=Symbol("t"), **kwargs):
             try: val = val.subs(kwargs)
             except (TypeError, AttributeError): pass
 
-        try: val = val.evalf()
-        except (TypeError, AttributeError): pass
+        try: val = float(Known.resolve(val, levels=-1, evalf=True))
+        except TypeError as e:  raise TypeError(f"Could not evaluate {val} to float. Stopped resolving at {Known.resolve(val, levels=-1, evalf=True)}") from e
+
 
         values.append(val if val is not None and val != nan else 0)
     return values
