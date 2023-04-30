@@ -3,24 +3,24 @@ from sympy import Symbol
 from .symbolics import get_free_symbols, evaluate_on_range
 
 
-def plotdiscr(funcs:list[callable], T:list[int], vars:list[Symbol]=[Symbol("t")], label:str="none", **kwargs):
+def plotdiscr(funcs:list[callable], T:list[int], vars=Symbol("n", integer=True), **kwargs):
     time = range(T[0], T[1]+1)
 
     if not isinstance(funcs, list):
         funcs = [funcs]
     for i in range(len(funcs)):
-        _plotdiscr_single(funcs[i], time, var=vars[i] if i<len(vars) else Symbol("t"), label=label, **kwargs)
+        _plotdiscr_single(funcs[i], time, var=vars[i] if i<len(vars) else vars[0], **kwargs)
 
     plt.axhline(0, color='black', linewidth=0.8)
     plt.grid(linewidth=0.5)
     plt.show()
 
 
-def _plotdiscr_single(f:callable, time:list[int], var:Symbol=Symbol("t"), label:str="none", **kwargs):
+def _plotdiscr_single(f:callable, time:list[int], var:Symbol, **kwargs):
     values = evaluate_on_range(f, time, var=var, **kwargs)
 
     try:
-        plt.stem(time, values, label=label)
+        plt.stem(time, values)
         lims = (min(values), max(values))
         for i, v in zip(time, values):
             v_off = (lims[1]-lims[0])/40 * (1 if v >= 0 else -1)
@@ -39,7 +39,7 @@ def _plotdiscr_single(f:callable, time:list[int], var:Symbol=Symbol("t"), label:
 
 
 
-def plotcont(funcs:list[callable], T:list[float], timestep:float=0.01, vars:list[Symbol]=[Symbol("t")], nsamples:int=None,  label:str="none", **kwargs):
+def plotcont(funcs:list[callable], T:list[float], timestep:float=0.01, vars=Symbol("t", real=True), nsamples:int=None, **kwargs):
     if nsamples==None:
         nsamples = int(((T[1]-T[0]))/timestep + 1.5)
     else:
@@ -51,7 +51,7 @@ def plotcont(funcs:list[callable], T:list[float], timestep:float=0.01, vars:list
     if not isinstance(vars, list):
         vars = [vars]
     for i in range(len(funcs)):
-        _plotcont_single(funcs[i], time, var=vars[i] if i<len(vars) else Symbol("t"), label=label, **kwargs)
+        _plotcont_single(funcs[i], time, var=vars[i] if i<len(vars) else vars[0], **kwargs)
 
     plt.axhline(0, color='black', linewidth=0.7)
     plt.axvline(0, color='black', linewidth=0.7)
@@ -59,7 +59,7 @@ def plotcont(funcs:list[callable], T:list[float], timestep:float=0.01, vars:list
     plt.show()
 
 
-def _plotcont_single(f:callable, time:list[float], var:Symbol=Symbol("t"), label:str="none", **kwargs):
+def _plotcont_single(f:callable, time:list[float], var:Symbol, **kwargs):
 
     values = evaluate_on_range(f, time, var=var, **kwargs)
 
