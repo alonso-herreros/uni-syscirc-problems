@@ -9,9 +9,6 @@ class Known(Symbol):
     def __init__(self, name:str, value):
         Symbol.__init__(name)
         self._value = value
-    def __init__(self, symbol:Symbol, value):
-        self = symbol
-        self._value = value
 
     @property
     def value(self): return self._value
