@@ -17,9 +17,7 @@ class Component:
         
     @property
     def Z(self):
-        if self._Z == None:
-            self._Z = self.Z_calc(self.param, self.freq)
-        return Known(f"Z_{self.name}", self._Z)
+        return Known(f"Z_{self.name}", self.Z_calc(self.param, self.freq))
 
     @property
     def V(self):
