@@ -46,6 +46,7 @@ class Component:
         self._I = I_
     @property
     def i(self): return re(self.I)
+    @property
     def ip(self): return Abs(self.I)**2
 
 
