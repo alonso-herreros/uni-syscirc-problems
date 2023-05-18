@@ -77,7 +77,8 @@ def evaluate_on_range(f, time:list[float], var:Symbol=Symbol("t"), **kwargs):
 
         try: val = float(Known.resolve(val, levels=-1, evalf=True))
         except TypeError as e:
-            raise TypeError(f"Could not evaluate {val} to float. Symbols left: {get_free_symbols(val)}") from e
+            try: raise TypeError(f"Could not evaluate {val} to float. Symbols left: {val.free_symbols}.") from e
+            except TypeError: raise TypeError(f"Could not evaluate {val} to float.") from e
 
 
         values.append(val if val is not None and val != nan else 0)
