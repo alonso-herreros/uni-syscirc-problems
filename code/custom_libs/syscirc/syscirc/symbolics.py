@@ -3,18 +3,18 @@ from sympy import Symbol, Rel, nan, Eq
 class Known(Symbol):
     def __new__(cls, name, value=None, **kwargs):
         obj = Symbol.__new__(cls, name, **kwargs)
-        obj._value = value or Symbol(name)
+        obj.value = value
         return obj
 
     def __init__(self, name:str, value=None, **kwargs):
         Symbol.__init__(name, **kwargs)
-        self._value = value or Symbol(name)
+        self.value = value
 
     @property
     def value(self): return self._value
     @value.setter
     def value(self, value):
-        self._value = value if value!=None else Symbol(self.name)
+        self._value = value
     
     def __repr__(self):
         return f"{self.name} = {self.value}"
