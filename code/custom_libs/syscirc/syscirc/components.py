@@ -30,9 +30,9 @@ class Component:
             raise Exception("Cannot specify both V and I")
         self._V = V_
     @property
-    def v(self): return re(self.V)
+    def v(self): return Known(f"v_{self.name}", re(self.V))
     @property
-    def vp(self): return Abs(self.V)**2
+    def vp(self): return Known(f"p_{self.name}.V", Abs(self.V)**2)
 
     @property
     def I(self):
@@ -45,9 +45,9 @@ class Component:
             raise Exception("Cannot specify both V and I")
         self._I = I_
     @property
-    def i(self): return re(self.I)
+    def i(self): return Known(f"i_{self.name}", re(self.I))
     @property
-    def ip(self): return Abs(self.I)**2
+    def ip(self): return Known(f"p_{self.name}.I", Abs(self.I)**2)
 
 
 class Resistor(Component):
