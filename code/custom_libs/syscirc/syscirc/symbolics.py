@@ -14,7 +14,7 @@ class Known(Symbol):
     def value(self): return self._value
     @value.setter
     def value(self, value):
-        self._value = value
+        self._value = value if value!=None else Symbol(self.name)
     
     def __repr__(self):
         return f"{self.name} = {self.value}"
@@ -28,6 +28,9 @@ class Known(Symbol):
 
     def update(self, expr, levels:int=1, evalf:bool=False):
         return Known.resolve(expr, [self], levels, evalf)
+    
+    def reset(self):
+        self.value = None
     
     @staticmethod
     def resolve(expr, knowns=[], levels:int=1, evalf:bool=False, exclude=[]):
