@@ -1,14 +1,14 @@
 from sympy import Symbol, Rel, nan
 
 class Known(Symbol):
-    def __new__(cls, name, value):
+    def __new__(cls, name, value=None):
         obj = Symbol.__new__(cls, name)
-        obj._value = value
+        obj._value = value or Symbol(name)
         return obj
 
-    def __init__(self, name:str, value):
+    def __init__(self, name:str, value=None):
         Symbol.__init__(name)
-        self._value = value
+        self._value = value or Symbol(name)
 
     @property
     def value(self): return self._value
@@ -76,7 +76,8 @@ def evaluate_on_range(f, time:list[float], var:Symbol=Symbol("t"), **kwargs):
             except (TypeError, AttributeError): pass
 
         try: val = float(Known.resolve(val, levels=-1, evalf=True))
-        except TypeError as e:  raise TypeError(f"Could not evaluate {val} to float. Stopped resolving at {Known.resolve(val, levels=-1, evalf=True)}") from e
+        except TypeError as e:
+            raise TypeError(f"Could not evaluate {val} to float. Symbols left: {get_free_symbols(val)}") from e
 
 
         values.append(val if val is not None and val != nan else 0)
