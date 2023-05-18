@@ -1,4 +1,4 @@
-from sympy import re
+from sympy import re, Abs
 from .symbolics import Known
 
 class Component:
@@ -31,6 +31,8 @@ class Component:
         self._V = V_
     @property
     def v(self): return re(self.V)
+    @property
+    def vp(self): return Abs(self.v)**2
 
     @property
     def I(self):
@@ -44,6 +46,7 @@ class Component:
         self._I = I_
     @property
     def i(self): return re(self.I)
+    def ip(self): return Abs(self.i)**2
 
 
 class Resistor(Component):
