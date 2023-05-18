@@ -32,7 +32,7 @@ class Component:
     @property
     def v(self): return re(self.V)
     @property
-    def vp(self): return Abs(self.v)**2
+    def vp(self): return Abs(self.V)**2
 
     @property
     def I(self):
@@ -46,7 +46,7 @@ class Component:
         self._I = I_
     @property
     def i(self): return re(self.I)
-    def ip(self): return Abs(self.i)**2
+    def ip(self): return Abs(self.I)**2
 
 
 class Resistor(Component):
