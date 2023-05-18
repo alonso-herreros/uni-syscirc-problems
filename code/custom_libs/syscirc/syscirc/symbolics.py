@@ -1,4 +1,4 @@
-from sympy import Symbol, Rel, nan
+from sympy import Symbol, Rel, nan, Eq
 
 class Known(Symbol):
     def __new__(cls, name, value=None, **kwargs):
@@ -22,6 +22,9 @@ class Known(Symbol):
         return self.name
     def __float__(self):
         return self.evalf()
+
+    def valueEquation(self, evalf:bool=False):
+        return Eq(self, Known.resolve(self.value, levels=-1, evalf=evalf))
     
     def evalf(self):
         return Known.resolve(self.value, levels=-1, evalf=True)
