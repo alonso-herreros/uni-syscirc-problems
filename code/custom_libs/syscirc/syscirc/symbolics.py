@@ -1,13 +1,13 @@
 from sympy import Symbol, Rel, nan
 
 class Known(Symbol):
-    def __new__(cls, name, value=None):
-        obj = Symbol.__new__(cls, name)
+    def __new__(cls, name, value=None, **kwargs):
+        obj = Symbol.__new__(cls, name, **kwargs)
         obj._value = value or Symbol(name)
         return obj
 
-    def __init__(self, name:str, value=None):
-        Symbol.__init__(name)
+    def __init__(self, name:str, value=None, **kwargs):
+        Symbol.__init__(name, **kwargs)
         self._value = value or Symbol(name)
 
     @property
