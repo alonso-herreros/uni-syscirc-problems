@@ -23,6 +23,13 @@ class Known(Symbol):
     def __float__(self):
         return self.evalf()
 
+    def freeze(self):
+        """
+        Freeze the value of this symbol as much as possible
+        """
+        self.value = self.evalf()
+        return self
+
     def valueEquation(self, evalf:bool=False):
         return Eq(self, Known.resolve(self.value, levels=-1, evalf=evalf))
     
