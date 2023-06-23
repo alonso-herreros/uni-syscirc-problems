@@ -6,10 +6,24 @@ Systems and Circuits - Files that helped solving the problems from Signals and S
 
 ## Completion overview
 
-The following spreadsheet contains information on the total number of available, started and completed exercises:
+| Section | Completed | Total | Percentage |
+| --- | --- | --- | --- |
+| CH1. Basic with solutions | 0  | 20 | 0%   |
+| CH1. Basic Problems       | 1  | 11 | 100% |
+| CH1. Advanced Problems    | 8  | 16 | 50%  |
+| CH1. Math Review          | 0  | 9  | 0%   |
+|  |  |  |  |
+| CH2. Basic with solutions | 8  | 20 | 40%  |
+| CH2. Basic Problems       | 19 | 19 | 100% |
+| CH2. Advanced Problems    | 8  | 21 | 38%  |
+| CH2. Extension Problems   | 2  | 13 | 15%  |
+|  |  |  |  |
+| Circuits                  | 0  | 5  | 0%   |
+
+The following spreadsheet contains more information on the of available, started and completed exercises. It is public for members of UC3M.
+There is a Microsoft Excel copy of the spreadsheet in this repo as well.
+
 https://docs.google.com/spreadsheets/d/1jjJUTQnzIuPHuI-kCKego5OOER66nDYEsN4HBKxamx0
-It is public for members of the UC3M group.
-There is a Microsoft Excel copy of the spreadsheet inside this repo as well (updated 2023.06.23).
 
 ---
 
